@@ -14,7 +14,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Initialize Firebase Admin SDK
-cred = credentials.Certificate('aimim-2afab-firebase-adminsdk-8gpgx-b03f751616.json')  # Replace with the path to your service account key
+cred = credentials.Certificate('aimim-2afab-firebase-adminsdk-8gpgx-2f1475b483.json')  # Replace with the path to your service account key
 firebase_admin.initialize_app(cred, {
     'storageBucket': 'aimim-2afab.appspot.com'  # Replace with your bucket name
 })
