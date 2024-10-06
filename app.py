@@ -221,25 +221,42 @@ def download_voice_recording(response_id):
     else:
         return jsonify({"success": False, "message": "No recording found for this response."}), 404
 
-# Create a directory for uploads if it doesn't exist
-UPLOAD_FOLDER = 'uploads'
-if not os.path.exists(UPLOAD_FOLDER):
-    os.makedirs(UPLOAD_FOLDER)
-
+# Route to handle file upload
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return jsonify({'success': False, 'message': 'No file part'}), 400
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part in the request'}), 400
+        
+        file = request.files['file']
+        
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
 
-    file = request.files['file']
-    if file.filename == '':
-        return jsonify({'success': False, 'message': 'No selected file'}), 400
+        # Secure the filename and prepare for upload
+        filename = secure_filename(file.filename)
+        
+        # Create a unique filename to avoid overwriting (optional but recommended)
+        unique_filename = f"{str(uuid.uuid4())}_{filename}"
+        
+        # Reference Firebase Storage bucket
+        blob = bucket.blob(f"voice_recordings/{unique_filename}")
 
-    # Save the file
-    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
-    file.save(file_path)
+        # Upload file from Flask's file object
+        blob.upload_from_file(file)
 
-    return jsonify({'success': True, 'file_path': file_path})
+        # Generate a public URL for the uploaded file
+        blob.make_public()  # Makes the file publicly accessible
+        
+        file_url = blob.public_url
+        
+        # Return success response with the file URL
+        return jsonify({'message': 'File uploaded successfully', 'file_url': file_url}), 200
+
+    except Exception as e:
+        print(f"Error during file upload: {str(e)}")  # Log for debugging
+        return jsonify({'error': 'File upload failed', 'details': str(e)}), 500
+
 
 
 # Delete a survey
@@ -268,7 +285,6 @@ def delete_survey(survey_id):
         conn.close()
         return jsonify({'error': 'Survey not found'}), 404
 
-# Submit a survey response
 @app.route('/submit_survey', methods=['POST'])
 def submit_survey():
     data = request.json
@@ -276,32 +292,16 @@ def submit_survey():
     survey_id = data['survey_id']
     responses = json.dumps(data['responses'])  # Store responses as JSON string
     location = data.get('location')
-    voice_recording_path = data.get('voice_recording_path')
+    voice_recording_url = data.get('voice_recording_url')  # Get the URL from the uploaded recording
 
     location_data = json.loads(location) if location else None
 
     conn = psycopg2.connect(**db_params)
     cursor = conn.cursor()
 
-    if location_data:
-        latitude = location_data['latitude']
-        longitude = location_data['longitude']
-
-        cursor.execute("SELECT location FROM survey_responses WHERE user_id = %s ORDER BY id DESC LIMIT 1", (user_id,))
-        last_response = cursor.fetchone()
-
-        if last_response:
-            last_location = json.loads(last_response[0])
-            last_latitude = last_location['latitude']
-            last_longitude = last_location['longitude']
-            
-            distance = haversine(last_latitude, last_longitude, latitude, longitude)
-            
-            if distance < 0.005:  # Less than 5 meters
-                return jsonify({"success": False, "message": "You cannot submit a response within 5 meters of your previous response."})
-
+    # Insert the survey response along with the voice recording URL
     cursor.execute("INSERT INTO survey_responses (user_id, survey_id, responses, location, voice_recording_path) VALUES (%s, %s, %s, %s, %s)", 
-                   (user_id, survey_id, responses, location, voice_recording_path))
+                   (user_id, survey_id, responses, location, voice_recording_url))
     conn.commit()
 
     cursor.close()
