@@ -16,15 +16,15 @@ CORS(app)
 
 service_account_info = {
   "type": "service_account",
-  "project_id": "aimim-2afab",
-  "private_key_id": "2f1475b483c3482f912392a0bc62f449382dd49a",
-  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDRenmMDRyBFzgk\nPYQ9MIji1fxYL4huDeOjffe87hjtcvtMyTBOUiQy2WRtMXJRcOfA4aNh7kE5LjSU\nMOaUVztJ8e7qNCYTLtEPInDOGatawkrpG+2hVyxthRNL2ystBC0jLZbBid1u65lw\nC9v/fONPHcB+LdDbVpxfwdLOjvLoHWaqNEHAmNPoBItvLdb9h2jdnYQWHSpwQiwo\n119MrBvkK+BSmuoQMEfAsThjN5sN80chRU69bw9a1UjLhMGnK3ddypEd50H0eQoT\nl34E7HTQs1gj6mWt/Z1iTvqo4ZLq+cRylYE8XN36SdZxa3yBMddma6V0vEKSwyu2\nd7QwoAtHAgMBAAECggEABu84fdfjRSy5GY4FxibIqUWvLFYqfIYuLnfZjyIMpjOj\nuQeB913Fv/8tUWYNJEAKE/sENxY1h4iNighSYb+/gTOmlo8yYXkvx4H63P/Biegb\npbrcc3ZYzKlWmbDALaXRPrRgJLkFIQpgknJ6DmuadMCF4kdu/gvQcmUOrvLRfLiJ\nG5gSX9FUZpgqNoODmgGRVL40JizaMkIN8MqPUiSLbL5dDkPyrpG45Qvj9lWOi8La\nsVANjj6ry1pAswHJe2X3kGG909gOXUr7iabK2xgyFwhSVtqNGCfwgn6DkFK/C/vQ\nSzeRTsD/zdkeKHww6JB13heDSU6oLrzoU9qMRl5DiQKBgQDq+p0DPGIjvPtfSvjI\n36FYUPNiqAZntWXt/nfuAuQCY5Tkv+cfecPLafU3PY+J4SGq3zY9+9WfZuK1SA3s\nTiT/TGUjAlkUZT9jIh1CAo8hCStHOUBCxIgzCU7ZI5Ls5ORKT9MHmCo0AF47xQVh\nANVkbC5q8Qkla+7/ZvK1cw31LwKBgQDkN9vsdfh6A+lGurBZ3r+76Dpl0zbfJ6BV\nqmb7NKzzpkGxVgzUBojebHi+ZE/gZ1u7+u9l6rIJHRCZ2tgvLrp7VK3MUfeG5ycl\nbEaq8TCGULdmJo/yVKhA8AmBS+xAk3a8JyRaVWWiB3/esCI2FIZn8DksBZCZp1HV\nuiWTyKh1aQKBgFVa37oTLxsIRM9irmhZQ4SPMzm9C0aU0AfZjbr5ddWgUq+dPdlj\nI8o6HQcJ56AQFWi6WDu/xON4PhXXrKcP48SQ/ZPwAGe2N4ZNGA+oWlGHwR7IHx2h\nwk+3q9qYX4CJzJtpz6BMl9f34kMX2FJaOSmXWm0iTU44nMJNpRBgUMulAoGBAMb5\nWLpyJIClNlbfX/ALAFnhYED1BOtNDkKCPiUYyQ3pT29A2hBl3iEmq6M7rFS3aMid\nQOo31J+TgqzRnBiPAjGTI7B3antov72mCHrzrF3+s9fRGUGrw8JSRcdAHawzpZrn\n+Y7005aQOVE7eahy/rhSPlZ+R5NfyT6xfB+8G/u5AoGAGc1CuHfEflbXw+bX696z\nayRRSq0e75KQMcSThoLb1EgKITlhQH+ydh5r2RktvgeEzbjVSjZo4Bn+20HB4Wmi\nytQnyRL5SZrnmtECcI9SkZlHJVxRYOAX6aXdHIQEkjtUaY9qBnfaxeqE00+fUd/k\n3RIKgchgY3hET7L7YJwbpKM=\n-----END PRIVATE KEY-----\n",
-  "client_email": "firebase-adminsdk-8gpgx@aimim-2afab.iam.gserviceaccount.com",
-  "client_id": "101711117160754515672",
+  "project_id": "surveyapp-d6180",
+  "private_key_id": "9bb7ddf293b25398f10856aac26aebb07691b165",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQC5+zfyemZAwEb9\nnP/aPZzRZ4K1Mx1rAihG0eiLG6YA7SHybwUtv3NmhyNQkFZQVJ3gpAfJgz0PDrpB\nve7f4eDI0sfChFe1HMjV8zBuTB8rerNtRIWp5mlwPJ80aFVCgwZ3Dt+9eiZvf3kC\nPhI5D25r5EjzZBuUa2MGAH0EZzqikGah87dilfbV9JI1Q6v//U9w8FCjcK3dB+Gq\nobQ3cqfAhfWnZoJ1nq6npkFwVImg4fuX3jcoZjyql0ehugvBHhTJCcRn3Xfued3q\nfUuwUGXbuHugEC1K2btH+vqDyONkW8ZDnochOF2C+2rKIgFHZsE+hZ9Snz7+u7sT\nGZsNzUr1AgMBAAECggEACtA/BAO230vutL9EpwlPDWPh1yxGKRsigV+iEDiG0eX3\nw9NNr0fC63KvDHef9SK+XTncVAyj57S5AqqK8Yx+F98di0NLoDWwvbPanIcjhtEn\nDpLd3K+PcN2tegwY7PmWTiTYwHkSNAhq3kUCpTuu9Wn8Dd7DtcD6rHYpzrA72gjG\nxLSZbiKVSwvk9jgp5kiI0tyIbQQXXjk79QSYF+ele5Yj/8EUdId9MIDyqb6OvkmS\nbFpvjdkYUep95oi1CIARxgrGn2qeKsZ0HJQv2orL1y1rQLhQNeK1/aByEcfESA22\nw95wL2uvpIEfBz1XSnrCW7BZtZnV4Fub/9Cdru3pIQKBgQD3JgI9ceT3H2WsR3Y7\n6jQlzB2Xc5bwyjsNa1NfcDlNhy1NmM+K2J2v1/IwaXGWiMJe618sjKy1sdS9Aett\nG+Zbxc7MWVeyxU6KgnJOptYuuaC/MqagJsjNe1YANBdqju1jOZdICavJxk0tym0f\nM2Ier+GCBjr2oyD85a/6mp950QKBgQDApGVsuRjEe5e7bZv7umNXCGXNAKdKxj0L\nuSwPeq/NoN3fyswHDtlPKZWwTergw4To1J0lQsPC5eTq9m6cahcFFvH2u9aErCrl\nj3WLe5PJSoTyQ9r15imX4i5JRP0VAx2lNWorYiFzLJbj201iz/3+qxQ3O/ZoH08S\nMc4qeVHj5QKBgHgXcv0ya6SdEAV/j/cbHY3EOhjOpOiKC9nAbfmxCVcfuSa8exSn\nny/Dyb42bmhMOc5vpoZ6MK31JD9XQHN7HBs56fun6hJHB5wMOMj5DpgTwQVG8mpd\njjMynB5rMXmoy7bsVBNAB8Z64iO++fkwOZxZsEVDC8GukKfyX+lw2s8RAoGBAI1x\nZ0Lf2M6TDIJCZW/7l2rUsKJHo41kZngQGsi2xRQO1Dm31fwsq+PS3aRYYWdsR08I\npOUx0zhrwZu/GtHfl01WXoxRuJ0rKEfrAFxMfOMjwt96cO9xcgKhwGhtrgDai868\nnFqEL5k4GQXuBDDUFGMDS9GORkqHCnCKfxxyfWz9AoGAd4g7Z2Ud8zmyy15fvWOu\ny9LKD54UsY2zYc3ENv0CHukLrbtZcoXc6yve4T4tw+ToGhFL2IIQQbN4MM7EJwkT\n02qPZSo/7o319OVOq88wPDsXol5mwLpcu6uu5fVeR3N2NIZJ/xaTTn72BVwWB4cr\nseAJXjxCcC6vZH3oECTUdrE=\n-----END PRIVATE KEY-----\n",
+  "client_email": "firebase-adminsdk-lfixf@surveyapp-d6180.iam.gserviceaccount.com",
+  "client_id": "104461428265076318658",
   "auth_uri": "https://accounts.google.com/o/oauth2/auth",
   "token_uri": "https://oauth2.googleapis.com/token",
   "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
-  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-8gpgx%40aimim-2afab.iam.gserviceaccount.com",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/firebase-adminsdk-lfixf%40surveyapp-d6180.iam.gserviceaccount.com",
   "universe_domain": "googleapis.com"
 }
 
@@ -33,11 +33,13 @@ service_account_info = {
 # Initialize the Firebase Admin SDK
 cred = credentials.Certificate(service_account_info)
 initialize_app(cred, {
-    'projectId': 'aimim-2afab',
-    'storageBucket': 'aimim-2afab.appspot.com'  # Replace with your actual bucket name
+    'projectId': 'surveyapp-d6180',
+    'storageBucket': 'surveyapp-d6180.appspot.com'  # Replace with your actual bucket name
 })
 
 bucket = storage.bucket()
+
+
 
 # PostgreSQL connection parameters
 db_params = {
