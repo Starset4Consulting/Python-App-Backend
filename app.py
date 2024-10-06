@@ -221,28 +221,25 @@ def download_voice_recording(response_id):
     else:
         return jsonify({"success": False, "message": "No recording found for this response."}), 404
 
-# Route to handle file upload
+# Create a directory for uploads if it doesn't exist
+UPLOAD_FOLDER = 'uploads'
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    try:
-        if 'file' not in request.files:
-            return jsonify({'error': 'No file part'}), 400
-        
-        file = request.files['file']
-        
-        if file.filename == '':
-            return jsonify({'error': 'No file selected'}), 400
-        
-        # Secure the filename and upload
-        filename = secure_filename(file.filename)
-        blob = bucket.blob(filename)
-        blob.upload_from_file(file)
+    if 'file' not in request.files:
+        return jsonify({'success': False, 'message': 'No file part'}), 400
 
-        return jsonify({'message': 'File uploaded successfully'}), 200
+    file = request.files['file']
+    if file.filename == '':
+        return jsonify({'success': False, 'message': 'No selected file'}), 400
 
-    except Exception as e:
-        print(f"Error during file upload: {str(e)}")  # Log for debugging
-        return jsonify({'error': 'File upload failed', 'details': str(e)}), 500
+    # Save the file
+    file_path = os.path.join(UPLOAD_FOLDER, file.filename)
+    file.save(file_path)
+
+    return jsonify({'success': True, 'file_path': file_path})
 
 
 # Delete a survey
