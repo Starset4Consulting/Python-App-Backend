@@ -1,6 +1,6 @@
-streamlit
-pandas
-plotly
-flask
+Flask
+werkzeug
 flask-cors
+psycopg2-binary
+firebase-admin
 gunicorn
