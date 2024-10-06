@@ -7,16 +7,16 @@ import math
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import firebase_admin
-from firebase_admin import credentials, storage
+from firebase_admin import credentials, storage, initialize_app
 from datetime import timedelta
 
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Firebase Admin SDK
-cred = credentials.Certificate('aimim-2afab-firebase-adminsdk-8gpgx-2f1475b483.json')  # Replace with the path to your service account key
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'aimim-2afab.appspot.com'  # Replace with your bucket name
+# Initialize the Firebase Admin SDK
+cred = credentials.Certificate('surveyapp-d6180-5c0d85f933bc.json')
+initialize_app(cred, {
+    'storageBucket': 'surveyapp-d6180.appspot.com'  # Replace with your actual bucket name
 })
 
 # Access the Firebase storage bucket
@@ -50,7 +50,7 @@ def init_db():
     cursor.execute('''CREATE TABLE IF NOT EXISTS survey_responses (
                         id SERIAL PRIMARY KEY,
                         user_id INTEGER REFERENCES users(id),
-                        survey_id INTEGER REFERENCES surveys(id),
+                        survey_id INTEGER REFERENCES surveys(id) ON DELETE CASCADE,
                         responses TEXT,
                         location TEXT,
                         voice_recording_path TEXT)''')
