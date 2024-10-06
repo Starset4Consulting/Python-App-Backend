@@ -3,6 +3,7 @@ from werkzeug.utils import secure_filename
 from flask_cors import CORS
 import json
 import os
+import uuid  # Import the uuid module
 import math
 import psycopg2
 from psycopg2.extras import RealDictCursor
