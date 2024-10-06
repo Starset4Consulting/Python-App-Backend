@@ -17,6 +17,7 @@ CORS(app)
 # Initialize the Firebase Admin SDK
 cred = credentials.Certificate('aimim-2afab-firebase-adminsdk-8gpgx-7e19be3275.json')
 initialize_app(cred, {
+    'projectId': 'aimim-2afab',
     'storageBucket': 'aimim-2afab.appspot.com'  # Replace with your actual bucket name
 })
 
