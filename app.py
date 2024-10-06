@@ -7,19 +7,18 @@ import math
 import psycopg2
 from psycopg2.extras import RealDictCursor
 import firebase_admin
-from firebase_admin import credentials, storage
+from firebase_admin import credentials, storage, initialize_app
 from datetime import timedelta
 
 app = Flask(__name__)
 CORS(app)
 
-# Initialize Firebase Admin SDK
-cred = credentials.Certificate('aimim-2afab-firebase-adminsdk-8gpgx-b03f751616.json')  # Replace with the path to your service account key
-firebase_admin.initialize_app(cred, {
-    'storageBucket': 'aimim-2afab.appspot.com'  # Replace with your bucket name
+# Initialize the Firebase Admin SDK
+cred = credentials.Certificate('aimim-2afab-firebase-adminsdk-8gpgx-b03f751616.json')
+initialize_app(cred, {
+    'storageBucket': 'aimim-2afab.appspot.com'  # Replace with your actual bucket name
 })
 
-# Access the Firebase storage bucket
 bucket = storage.bucket()
 
 # PostgreSQL connection parameters
@@ -225,28 +224,26 @@ def download_voice_recording(response_id):
 # Route to handle file upload
 @app.route('/upload', methods=['POST'])
 def upload_file():
-    if 'file' not in request.files:
-        return jsonify({'success': False, 'message': 'No file part'})
-
-    file = request.files['file']
-
-    if file.filename == '':
-        return jsonify({'success': False, 'message': 'No selected file'})
-
-    if file:
-        # Ensure the filename is secure
-        secure_filename_str = secure_filename(file.filename)
+    try:
+        if 'file' not in request.files:
+            return jsonify({'error': 'No file part'}), 400
         
-        # Create a unique filename
-        blob = storage.bucket().blob(f'voice_recordings/{secure_filename_str}')
+        file = request.files['file']
+        
+        if file.filename == '':
+            return jsonify({'error': 'No file selected'}), 400
+        
+        # Secure the filename and upload
+        filename = secure_filename(file.filename)
+        blob = bucket.blob(filename)
         blob.upload_from_file(file)
 
-        # Get the path to store in the database
-        file_path = blob.name
+        return jsonify({'message': 'File uploaded successfully'}), 200
 
-        return jsonify({'success': True, 'file_path': file_path})
+    except Exception as e:
+        print(f"Error during file upload: {str(e)}")  # Log for debugging
+        return jsonify({'error': 'File upload failed', 'details': str(e)}), 500
 
-    return jsonify({'success': False, 'message': 'File upload failed'})
 
 # Delete a survey
 @app.route('/surveys/<int:survey_id>', methods=['DELETE'])
