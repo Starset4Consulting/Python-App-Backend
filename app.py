@@ -62,7 +62,7 @@ def init_db():
 
 # Assuming you have a function to get the database connection
 def get_db_connection():
-    conn = psycopg2.connect("postgresql://aimim_user:fhH2YntIUtHxicimP5M6RCpcu3AOmJMx@dpg-cs10b0a3esus7399aghg-a.singapore-postgres.render.com:5432/aimim")
+    conn = psycopg2.connect(**db_params)
     return conn
 
 @app.route('/register', methods=['POST'])
@@ -113,9 +113,6 @@ def register():
             conn.close()
         return jsonify({'error': 'Registration failed'}), 500
 
-
-
-
 # Login for users
 @app.route('/login', methods=['POST'])
 def login():
@@ -123,7 +120,7 @@ def login():
     username = data['username']
     password = data['password']
 
-    conn = psycopg2.connect(**db_params)
+    conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("SELECT id, username FROM users WHERE username = %s AND password = %s", (username, password))
@@ -144,7 +141,7 @@ def create_survey():
     name = data['name']
     questions = json.dumps(data['questions'])  # Store as JSON string
 
-    conn = psycopg2.connect(**db_params)
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     cursor.execute("INSERT INTO surveys (name, questions) VALUES (%s, %s)", (name, questions))
@@ -158,7 +155,7 @@ def create_survey():
 # Get a list of all available surveys
 @app.route('/surveys', methods=['GET'])
 def get_surveys():
-    conn = psycopg2.connect(**db_params)
+    conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("SELECT * FROM surveys")
@@ -172,7 +169,7 @@ def get_surveys():
 # Get a specific survey by ID
 @app.route('/surveys/<int:survey_id>', methods=['GET'])
 def get_survey(survey_id):
-    conn = psycopg2.connect(**db_params)
+    conn = get_db_connection()
     cursor = conn.cursor(cursor_factory=RealDictCursor)
 
     cursor.execute("SELECT * FROM surveys WHERE id = %s", (survey_id,))
@@ -199,29 +196,6 @@ def haversine(lat1, lon1, lat2, lon2):
     )
     c = 2 * math.atan2(math.sqrt(a), math.sqrt(1 - a))
     return R * c
-
-# Download voice recording
-@app.route('/download/<int:response_id>', methods=['GET'])
-def download_voice_recording(response_id):
-    conn = psycopg2.connect(**db_params)
-    cursor = conn.cursor()
-
-    cursor.execute("SELECT voice_recording_path FROM survey_responses WHERE id = %s", (response_id,))
-    recording = cursor.fetchone()
-
-    cursor.close()
-    conn.close()
-
-    if recording and recording[0]:
-        voice_recording_path = recording[0]
-        
-        # Generate a download URL for the voice recording
-        blob = bucket.blob(voice_recording_path)
-        download_url = blob.generate_signed_url(timedelta(minutes=15), method='GET')
-
-        return jsonify({"success": True, "download_url": download_url})
-    else:
-        return jsonify({"success": False, "message": "No recording found for this response."}), 404
 
 # Route to handle file upload
 @app.route('/upload', methods=['POST'])
@@ -259,34 +233,7 @@ def upload_file():
         print(f"Error during file upload: {str(e)}")  # Log for debugging
         return jsonify({'error': 'File upload failed', 'details': str(e)}), 500
 
-
-
-# Delete a survey
-@app.route('/surveys/<int:survey_id>', methods=['DELETE'])
-def delete_survey(survey_id):
-    conn = psycopg2.connect(**db_params)
-    cursor = conn.cursor()
-
-    # Check if the survey exists
-    cursor.execute("SELECT * FROM surveys WHERE id = %s", (survey_id,))
-    survey = cursor.fetchone()
-
-    if survey:
-        # Delete associated responses first
-        cursor.execute("DELETE FROM survey_responses WHERE survey_id = %s", (survey_id,))
-
-        # Now delete the survey
-        cursor.execute("DELETE FROM surveys WHERE id = %s", (survey_id,))
-        conn.commit()
-
-        cursor.close()
-        conn.close()
-        return jsonify({'message': 'Survey deleted successfully'}), 200
-    else:
-        cursor.close()
-        conn.close()
-        return jsonify({'error': 'Survey not found'}), 404
-
+# Submit survey responses
 @app.route('/submit_survey', methods=['POST'])
 def submit_survey():
     data = request.json
@@ -298,7 +245,7 @@ def submit_survey():
 
     location_data = json.loads(location) if location else None
 
-    conn = psycopg2.connect(**db_params)
+    conn = get_db_connection()
     cursor = conn.cursor()
 
     # Insert the survey response along with the voice recording URL
@@ -311,6 +258,34 @@ def submit_survey():
 
     return jsonify({"success": True, "message": "Survey response submitted successfully"})
 
+# Delete a survey
+@app.route('/surveys/<int:survey_id>', methods=['DELETE'])
+def delete_survey(survey_id):
+    conn = get_db_connection()
+    cursor = conn.cursor()
+
+    cursor.execute("DELETE FROM surveys WHERE id = %s", (survey_id,))
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({"success": True, "message": "Survey deleted successfully"})
+
+# Get all survey responses for a specific survey
+@app.route('/surveys/<int:survey_id>/responses', methods=['GET'])
+def get_survey_responses(survey_id):
+    conn = get_db_connection()
+    cursor = conn.cursor(cursor_factory=RealDictCursor)
+
+    cursor.execute("SELECT * FROM survey_responses WHERE survey_id = %s", (survey_id,))
+    responses = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+
+    return jsonify({"responses": responses})
+
 if __name__ == '__main__':
-    init_db()
-    app.run(debug=True)
+    init_db()  # Create database tables on startup
+    app.run(debug=True, host='0.0.0.0', port=5000)  # Change host and port as needed
