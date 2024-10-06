@@ -3,3 +3,4 @@ pandas
 plotly
 flask
 flask-cors
+gunicorn
